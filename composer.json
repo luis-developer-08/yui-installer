@@ -9,7 +9,7 @@
     }
   },
   "bin": [
-    "bin/installer.bat"
+    "bin/yui"
   ],
   "authors": [
     {
