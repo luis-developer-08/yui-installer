@@ -4,6 +4,9 @@
 // Path to your package's directory
 $packagePath = __DIR__ . '/../';
 
+// Save the current directory
+$currentDir = getcwd();
+
 // Check if the vendor directory already exists
 if (!is_dir($packagePath . 'vendor')) {
     // Change the working directory to the package's directory where composer.json is located
@@ -21,7 +24,14 @@ if (!is_dir($packagePath . 'vendor')) {
         echo "Failed to install dependencies. Please run 'composer install' manually.\n";
         exit(1);
     }
+
+    // Return to the original directory
+    if (!chdir($currentDir)) {
+        echo "Failed to return to the original directory: $currentDir\n";
+        exit(1);
+    }
 }
+
 
 require __DIR__ . '/../vendor/autoload.php';
 
