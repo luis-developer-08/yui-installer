@@ -1,0 +1,24 @@
+{
+  "name": "luis-developer-08/yui-installer",
+  "description": "My customize laravel installer Yui",
+  "type": "project",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "CustomLaravelInstaller\\": "src/"
+    }
+  },
+  "bin": [
+    "bin/installer.bat"
+  ],
+  "authors": [
+    {
+      "name": "luis",
+      "email": "aprilluis.balbuena122616@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "symfony/console": "^7.2"
+  }
+}
