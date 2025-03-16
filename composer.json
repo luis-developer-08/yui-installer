@@ -1,7 +1,7 @@
 {
   "name": "luis-developer-08/yui-installer",
   "description": "My customize laravel installer Yui",
-  "version": "v1.1.3",
+  "version": "v1.1.4",
   "type": "project",
   "license": "MIT",
   "autoload": {
