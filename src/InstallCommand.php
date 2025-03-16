@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 
 class InstallCommand extends Command
 {
@@ -26,13 +27,87 @@ class InstallCommand extends Command
         // Ask for project name if not provided
         $name = $input->getArgument('name');
         if (!$name) {
-            $question = new Question('<question>Enter the project name:</question> ', 'yui-laravel-project');
+            $question = new Question('<question>Enter the project name: [yui-laravel-project]</question> ', 'yui-laravel-project');
             $name = $helper->ask($input, $output, $question);
         }
 
+        $dbTypeQuestion = new ChoiceQuestion(
+            '<question>Which database will you use?</question> (default: SqLite)',
+            ['sqlite', 'mysql'],
+            0
+        );
+        $dbType = $helper->ask($input, $output, $dbTypeQuestion);
+
+        if ($dbType === 'mysql') {
+            $databaseConfig = [
+                'DB_CONNECTION' => 'mysql',
+                'DB_HOST' => '127.0.0.1',
+                'DB_PORT' => '3306',
+                'DB_DATABASE' => $name,
+                'DB_USERNAME' => 'root',
+                'DB_PASSWORD' => '',
+            ];
+        } else {
+            $databaseConfig = [
+                'DB_CONNECTION' => 'sqlite',
+                '# DB_HOST' => '127.0.0.1',
+                '# DB_PORT' => '3306',
+                '# DB_DATABASE' => $name,
+                '# DB_USERNAME' => 'root',
+                '# DB_PASSWORD' => '',
+            ];
+        }
+
         // Ask if the user wants Breeze authentication
-        $breezeQuestion = new ConfirmationQuestion('Do you want to install Breeze authentication? (y/n): [y]', true);
+        $breezeQuestion = new ConfirmationQuestion('<info>Do you want to install Breeze authentication? (y/n): [y]</info>', true);
         $installBreeze = $helper->ask($input, $output, $breezeQuestion);
+
+        if ($installBreeze) {
+            $helper = $this->getHelper('question');
+
+            function askWithOptions($helper, $input, $output, $questionText, $options, $default)
+            {
+                $output->writeln("\n<question>$questionText</question>");
+                foreach ($options as $index => $option) {
+                    $output->writeln("  <info>" . ($index + 1) . ". $option</info>");
+                }
+
+                $question = new Question("Your choice (default: $default): ", $default);
+                $answer = $helper->ask($input, $output, $question);
+
+                while (!in_array($answer, $options) && (!ctype_digit($answer) || !isset($options[(int) $answer - 1]))) {
+                    $output->writeln('<error>Invalid choice. Please select a valid option.</error>');
+                    $answer = $helper->ask($input, $output, $question);
+                }
+
+                return isset($options[(int) $answer - 1]) ? $options[(int) $answer - 1] : $answer;
+            }
+
+            // Ask for Breeze stack
+            $stackOptions = ['blade', 'livewire', 'livewire-functional', 'react', 'vue', 'api'];
+            $stack = askWithOptions($helper, $input, $output, 'Which Breeze stack do you want to use?', $stackOptions, 'react');
+
+            // Ask for additional features
+            $featureOptions = ['dark', 'ssr', 'typescript', 'eslint'];
+            $output->writeln("\n<question>Select additional features (comma-separated for multiple, or leave blank for none):</question>");
+            foreach ($featureOptions as $index => $feature) {
+                $output->writeln("  <info>" . ($index + 1) . ". $feature</info>");
+            }
+
+            $featuresQuestion = new Question("Your choice: ", '');
+            $featuresInput = $helper->ask($input, $output, $featuresQuestion);
+            $features = array_map('trim', explode(',', $featuresInput));
+            $features = array_filter($features, function ($feature) use ($featureOptions) {
+                return in_array($feature, $featureOptions);
+            });
+
+            // Ask for test framework
+            $testFrameworkOptions = ['Pest', 'PHPUnit'];
+            $testFramework = askWithOptions($helper, $input, $output, 'Which test framework do you want to use?', $testFrameworkOptions, 'Pest');
+
+            // Store the user's choices
+            $options = compact('stack', 'features', 'testFramework');
+        }
 
         // Ask if the user wants Orion
         $orionQuestion = new ConfirmationQuestion('Do you want to install Orion? (y/n): [y]', true);
@@ -52,10 +127,58 @@ class InstallCommand extends Command
 
         chdir($name);
 
+        // Path to .env file
+        $envPath = getcwd() . '/.env';
+
+        // Read .env file
+        if (file_exists($envPath)) {
+            $envContent = file_get_contents($envPath);
+
+            // Ensure all database keys exist and are properly updated
+            $envContent = preg_replace('/^APP_NAME=Laravel.*/m', "APP_NAME=YUI", $envContent);
+            $envContent = preg_replace('/^DB_CONNECTION=.*/m', "DB_CONNECTION={$databaseConfig['DB_CONNECTION']}", $envContent);
+            $envContent = preg_replace('/^# DB_HOST=.*/m', "DB_HOST={$databaseConfig['DB_HOST']}", $envContent);
+            $envContent = preg_replace('/^# DB_PORT=.*/m', "DB_PORT={$databaseConfig['DB_PORT']}", $envContent);
+            $envContent = preg_replace('/^# DB_DATABASE=.*/m', "DB_DATABASE={$databaseConfig['DB_DATABASE']}", $envContent);
+            $envContent = preg_replace('/^# DB_USERNAME=.*/m', "DB_USERNAME={$databaseConfig['DB_USERNAME']}", $envContent);
+            $envContent = preg_replace('/^# DB_PASSWORD=.*/m', "DB_PASSWORD={$databaseConfig['DB_PASSWORD']}", $envContent);
+
+            // Handle SQLite case: Ensure MySQL values are not commented, and SQLite values are commented
+            if ($dbType === 'sqlite') {
+                $envContent = preg_replace('/^DB_CONNECTION=.*/m', "DB_CONNECTION=sqlite", $envContent);
+                $envContent = preg_replace('/^DB_HOST=.*/m', "# DB_HOST=127.0.0.1", $envContent);
+                $envContent = preg_replace('/^DB_PORT=.*/m', "# DB_PORT=3306", $envContent);
+                $envContent = preg_replace('/^DB_DATABASE=.*/m', "# DB_DATABASE={$databaseConfig['DB_DATABASE']}", $envContent);
+                $envContent = preg_replace('/^DB_USERNAME=.*/m', "# DB_USERNAME=root", $envContent);
+                $envContent = preg_replace('/^DB_PASSWORD=.*/m', "# DB_PASSWORD=", $envContent);
+            }
+
+            // Save updated .env file
+            file_put_contents($envPath, $envContent);
+            $output->writeln("✅ <info>Updated .env file with database configuration.</info>");
+        }
+
         if ($installBreeze) {
             $output->writeln("<info>Installing Breeze...</info>");
             $this->runCommand("composer require laravel/breeze --dev", $output);
-            $this->runCommand("php artisan breeze:install", $output);
+
+            // Construct Breeze installation command dynamically
+            $breezeCommand = "php artisan breeze:install $stack";
+
+            if (!empty($features)) {
+                $breezeCommand .= ' ' . implode(' ', $features);
+            }
+
+            // Add test framework flag only for PHPUnit (since Pest is now the default)
+            if ($testFramework === 'PHPUnit') {
+                $breezeCommand .= ' --phpunit';
+            }
+
+            if ($testFramework === 'Pest') {
+                $breezeCommand .= ' --pest';
+            }
+
+            $this->runCommand($breezeCommand, $output);
             $this->registerMakeInertiaCommand($output);
         }
 

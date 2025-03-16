@@ -1,19 +1,19 @@
 <?php return array(
     'root' => array(
-        'name' => 'luis-developer-08/custom-laravel-installer',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'name' => 'luis-developer-08/yui-installer',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => 'e774ce83508afd6991dae182e383fbc9d625a0a8',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
     ),
     'versions' => array(
-        'luis-developer-08/custom-laravel-installer' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+        'luis-developer-08/yui-installer' => array(
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'e774ce83508afd6991dae182e383fbc9d625a0a8',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
