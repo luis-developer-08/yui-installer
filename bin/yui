@@ -4,14 +4,15 @@
 // Path to your package's directory
 $packagePath = __DIR__ . '/../';
 
-// Change the working directory to the package's directory where composer.json is located
-if (!chdir($packagePath)) {
-    echo "Failed to change directory to: $packagePath\n";
-    exit(1);
-}
-
-// Check if the vendor directory exists, if not, run composer install
+// Check if the vendor directory already exists
 if (!is_dir($packagePath . 'vendor')) {
+    // Change the working directory to the package's directory where composer.json is located
+    if (!chdir($packagePath)) {
+        echo "Failed to change directory to: $packagePath\n";
+        exit(1);
+    }
+
+    // If vendor doesn't exist, run composer install
     echo "Dependencies not found. Running composer install...\n";
     passthru('composer install', $return_var);
 
