@@ -23,7 +23,6 @@ class InstallCommand extends Command
     {
         $helper = $this->getHelper('question');
 
-        // Ask for project name if not provided
         $name = $input->getArgument('name');
         if (!$name) {
             $question = new Question('<question>Enter the project name: [yui-laravel-project]</question> ', 'yui-laravel-project');
@@ -57,7 +56,6 @@ class InstallCommand extends Command
             ];
         }
 
-        // Ask if the user wants Breeze authentication
         $breezeQuestion = new ConfirmationQuestion('<info>Do you want to install Breeze authentication? (y/n): [y]</info>', true);
         $installBreeze = $helper->ask($input, $output, $breezeQuestion);
 
@@ -108,19 +106,15 @@ class InstallCommand extends Command
             $options = compact('stack', 'features', 'testFramework');
         }
 
-        // Ask if the user wants Orion
         $orionQuestion = new ConfirmationQuestion('Do you want to install Orion? (y/n): [y]', true);
         $installOrion = $helper->ask($input, $output, $orionQuestion);
 
-        // Ask if the user wants Spatie permission
         $spatiePermissionQuestion = new ConfirmationQuestion('Do you want to install Spatie permission? (y/n): [y]', true);
         $installSpatiePermission = $helper->ask($input, $output, $spatiePermissionQuestion);
 
-        // Ask if the user wants Spatie permission
         $tanstackReactQueryQuestion = new ConfirmationQuestion('Do you want to install Tanstack React Query? (y/n): [y]', true);
         $installTanstackReactQueryQuestion = $helper->ask($input, $output, $tanstackReactQueryQuestion);
 
-        // Execute installation process based on user's choices
         $output->writeln("<info>Creating Laravel project: $name</info>");
         $this->runCommand("composer create-project laravel/laravel $name", $output);
 
