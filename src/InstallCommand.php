@@ -8,7 +8,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
-use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
 class InstallCommand extends Command
