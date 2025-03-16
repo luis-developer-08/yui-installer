@@ -1,1 +1,9 @@
-vendor
+# Ignore the vendor directory
+/vendor/
+
+# Ignore Composer's local configuration
+/composer.phar
+
+# Ignore IDE/editor settings
+/.idea/
+/.vscode/
