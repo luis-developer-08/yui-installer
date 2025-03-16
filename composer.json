@@ -9,7 +9,7 @@
     }
   },
   "bin": [
-    "bin/installer"
+    "bin/installer.bat"
   ],
   "authors": [
     {
