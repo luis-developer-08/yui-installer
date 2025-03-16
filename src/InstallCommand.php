@@ -23,6 +23,13 @@ class InstallCommand extends Command
     {
         $helper = $this->getHelper('question');
 
+        $output->write(PHP_EOL . '  <fg=green>__     __  _    _   _____
+  \ \   / / | |  | | |_   _|
+   \ \_/ /  | |  | |   | |
+    \   /   | |  | |   | |
+     | |    | |__| |  _| |_
+     |_|     \____/  |_____|</>' . PHP_EOL . PHP_EOL);
+
         // Ask for project name if not provided
         $name = $input->getArgument('name');
         if (!$name) {
