@@ -115,10 +115,15 @@ class InstallCommand extends Command
         $tanstackReactQueryQuestion = new ConfirmationQuestion('Do you want to install Tanstack React Query? (y/n): [y]', true);
         $installTanstackReactQueryQuestion = $helper->ask($input, $output, $tanstackReactQueryQuestion);
 
-        $output->writeln("<info>Creating Laravel project: $name</info>");
-        $this->runCommand("composer create-project laravel/laravel $name", $output);
+        $currentDir = getcwd();
 
-        chdir($name);
+        // Set the target directory for the new Laravel project (e.g., from the current directory)
+        $projectDir = $currentDir . '/' . $name; // Full path to where you want the project
+
+        $output->writeln("<info>Creating Laravel project in: $projectDir</info>");
+        $this->runCommand("composer create-project laravel/laravel $projectDir", $output);
+
+        chdir($projectDir);
 
         // Path to .env file
         $envPath = getcwd() . '/.env';

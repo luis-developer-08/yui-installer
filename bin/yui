@@ -42,7 +42,7 @@ $version = $composerJson['version'] ?? 'unknown';
 
 $app = new CustomApplication();
 $output = new ConsoleOutput();
-$output->writeln(PHP_EOL . '  <fg=green>__     __  _    _   _____
+$output->writeln(PHP_EOL . '  <fg=blue>__     __  _    _   _____
   \ \   / / | |  | | |_   _|
    \ \_/ /  | |  | |   | |
     \   /   | |  | |   | |
