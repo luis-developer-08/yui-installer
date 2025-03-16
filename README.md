@@ -114,24 +114,6 @@ class PostController extends Controller
 }
 ```
 
-### ✨ Example Generated Model (if not existing)
-
-```php
-<?php
-
-namespace App\Models;
-
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class Post extends Model
-{
-    use HasFactory;
-
-    protected $guarded = [];
-}
-```
-
 ### 🔗 Auto-Registered Route in `routes/api.php`
 
 ```php
