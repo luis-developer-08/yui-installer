@@ -9,7 +9,7 @@
     }
   },
   "bin": [
-    "bin/yui"
+    "bin/installer"
   ],
   "authors": [
     {
