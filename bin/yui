@@ -5,7 +5,36 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Symfony\Component\Console\Application;
 use CustomLaravelInstaller\InstallCommand;
+use CustomLaravelInstaller\VersionCommand;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
-$app = new Application();
+// Custom Application Class to suppress "Console Tool" message
+class CustomApplication extends Application
+{
+    protected function doRunCommand(\Symfony\Component\Console\Command\Command $command, \Symfony\Component\Console\Input\InputInterface $input, \Symfony\Component\Console\Output\OutputInterface $output): int
+    {
+        // Allow the normal command to run without adding the "Console Tool" message
+        return parent::doRunCommand($command, $input, $output);
+    }
+}
+
+$app = new CustomApplication();
+
+// Custom banner in green
+// $app->setDefaultCommand('list', true);  // Ensure "list" command is default to show available commands
+
+// Output custom banner in green
+$output = new ConsoleOutput();
+$output->writeln(PHP_EOL . '  <fg=green>__     __  _    _   _____
+  \ \   / / | |  | | |_   _|
+   \ \_/ /  | |  | |   | |
+    \   /   | |  | |   | |
+     | |    | |__| |  _| |_
+     |_|     \____/  |_____|</>' . PHP_EOL . PHP_EOL);
+
+// Add your commands
 $app->add(new InstallCommand());
+$app->add(new VersionCommand());
+
+// Now run the application
 $app->run();

@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'luis-developer-08/yui-installer',
-        'pretty_version' => 'dev-main',
-        'version' => 'dev-main',
-        'reference' => 'e774ce83508afd6991dae182e383fbc9d625a0a8',
+        'pretty_version' => '1.1.1',
+        'version' => '1.1.1.0',
+        'reference' => null,
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'luis-developer-08/yui-installer' => array(
-            'pretty_version' => 'dev-main',
-            'version' => 'dev-main',
-            'reference' => 'e774ce83508afd6991dae182e383fbc9d625a0a8',
+            'pretty_version' => '1.1.1',
+            'version' => '1.1.1.0',
+            'reference' => null,
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

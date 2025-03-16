@@ -15,20 +15,13 @@ class InstallCommand extends Command
     protected function configure()
     {
         $this->setName('new')
-            ->setDescription('Create a new Laravel project with optional Breeze authentication and Orion.')
+            ->setDescription('Create a new YUI Laravel project with optional Breeze authentication and Orion.')
             ->addArgument('name', InputArgument::OPTIONAL, 'The name of the Laravel project');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $helper = $this->getHelper('question');
-
-        $output->write(PHP_EOL . '  <fg=green>__     __  _    _   _____
-  \ \   / / | |  | | |_   _|
-   \ \_/ /  | |  | |   | |
-    \   /   | |  | |   | |
-     | |    | |__| |  _| |_
-     |_|     \____/  |_____|</>' . PHP_EOL . PHP_EOL);
 
         // Ask for project name if not provided
         $name = $input->getArgument('name');
