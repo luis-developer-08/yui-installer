@@ -18,15 +18,11 @@ class VersionCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // If any of the options are triggered, show the version
-        // Read composer.json file
         $composerJson = json_decode(file_get_contents(__DIR__ . '/../composer.json'), true);
 
-        // Check if the version key exists in composer.json
-        $version = $composerJson['version'] ?? 'unknown';  // Default to 'unknown' if no version is set
+        $version = $composerJson['version'] ?? 'unknown';
 
-        // Display the version
-        $output->writeln("<info>Yui Installer version: v$version</info>");
+        $output->writeln("<info>Yui Installer version: $version</info>");
 
         return Command::SUCCESS;
     }
