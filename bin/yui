@@ -8,22 +8,18 @@ use CustomLaravelInstaller\InstallCommand;
 use CustomLaravelInstaller\VersionCommand;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-// Custom Application Class to suppress "Console Tool" message
 class CustomApplication extends Application
 {
     protected function doRunCommand(\Symfony\Component\Console\Command\Command $command, \Symfony\Component\Console\Input\InputInterface $input, \Symfony\Component\Console\Output\OutputInterface $output): int
     {
-        // Allow the normal command to run without adding the "Console Tool" message
         return parent::doRunCommand($command, $input, $output);
     }
 }
 
+$composerJson = json_decode(file_get_contents(__DIR__ . '/../composer.json'), true);
+$version = $composerJson['version'] ?? 'unknown';
+
 $app = new CustomApplication();
-
-// Custom banner in green
-// $app->setDefaultCommand('list', true);  // Ensure "list" command is default to show available commands
-
-// Output custom banner in green
 $output = new ConsoleOutput();
 $output->writeln(PHP_EOL . '  <fg=green>__     __  _    _   _____
   \ \   / / | |  | | |_   _|
@@ -32,9 +28,11 @@ $output->writeln(PHP_EOL . '  <fg=green>__     __  _    _   _____
      | |    | |__| |  _| |_
      |_|     \____/  |_____|</>' . PHP_EOL . PHP_EOL);
 
-// Add your commands
+$output->writeln(PHP_EOL . '<fg=blue>Yui Installer version: ' . $version . '</>' . PHP_EOL . PHP_EOL);
+
+
 $app->add(new InstallCommand());
 $app->add(new VersionCommand());
 
-// Now run the application
+
 $app->run();
