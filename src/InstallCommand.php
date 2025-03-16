@@ -23,22 +23,30 @@ class InstallCommand extends Command
     {
         $helper = $this->getHelper('question');
 
-        // 1️⃣ Ask for project name if not provided
+        // Ask for project name if not provided
         $name = $input->getArgument('name');
         if (!$name) {
-            $question = new Question('<question>Enter the project name:</question> ', 'laravel-project');
+            $question = new Question('<question>Enter the project name:</question> ', 'yui-laravel-project');
             $name = $helper->ask($input, $output, $question);
         }
 
-        // 2️⃣ Ask if the user wants Breeze authentication
-        $breezeQuestion = new ConfirmationQuestion('Do you want to install Breeze authentication? (y/n): ', false);
+        // Ask if the user wants Breeze authentication
+        $breezeQuestion = new ConfirmationQuestion('Do you want to install Breeze authentication? (y/n): [y]', true);
         $installBreeze = $helper->ask($input, $output, $breezeQuestion);
 
-        // 3️⃣ Ask if the user wants Orion
-        $orionQuestion = new ConfirmationQuestion('Do you want to install Orion? (y/n): ', false);
+        // Ask if the user wants Orion
+        $orionQuestion = new ConfirmationQuestion('Do you want to install Orion? (y/n): [y]', true);
         $installOrion = $helper->ask($input, $output, $orionQuestion);
 
-        // 4️⃣ Execute installation process based on user's choices
+        // Ask if the user wants Spatie permission
+        $spatiePermissionQuestion = new ConfirmationQuestion('Do you want to install Spatie permission? (y/n): [y]', true);
+        $installSpatiePermission = $helper->ask($input, $output, $spatiePermissionQuestion);
+
+        // Ask if the user wants Spatie permission
+        $tanstackReactQueryQuestion = new ConfirmationQuestion('Do you want to install Tanstack React Query? (y/n): [y]', true);
+        $installTanstackReactQueryQuestion = $helper->ask($input, $output, $tanstackReactQueryQuestion);
+
+        // Execute installation process based on user's choices
         $output->writeln("<info>Creating Laravel project: $name</info>");
         $this->runCommand("composer create-project laravel/laravel $name", $output);
 
@@ -53,13 +61,125 @@ class InstallCommand extends Command
 
         if ($installOrion) {
             $output->writeln("<info>Installing Orion...</info>");
+            $this->runCommand("php artisan install:api", $output);
             $this->runCommand("composer require tailflow/laravel-orion", $output);
             $this->registerMakeOrionCommand($output);
+        }
+
+        if ($installSpatiePermission) {
+            $output->writeln("<info>Installing Spatie Permission...</info>");
+            $this->runCommand("composer require spatie/laravel-permission", $output);
+            $this->runCommand("php artisan vendor:publish --provider='Spatie\Permission\PermissionServiceProvider'", $output);
+            $this->updateMiddlewareConfig($output);
+        }
+
+        if ($installTanstackReactQueryQuestion) {
+            $output->writeln("<info>Installing Tanstack React Query...</info>");
+            $this->runCommand("npm i @tanstack/react-query", $output);
+
+            $this->updateAppJsx($output);
         }
 
         $output->writeln('<info>Installation complete!</info>');
         return Command::SUCCESS;
     }
+
+    private function updateAppJsx(OutputInterface $output): void
+    {
+        $appJsPath = getcwd() . '/resources/js/app.jsx'; // Fix path issue
+
+        $newContent = <<<JSX
+import "../css/app.css";
+import "./bootstrap";
+
+import { createInertiaApp } from "@inertiajs/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
+import { createRoot } from "react-dom/client";
+
+const appName = import.meta.env.VITE_APP_NAME || "Laravel";
+
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            refetchOnWindowFocus: false,
+            staleTime: 1000 * 60 * 5,
+        },
+    },
+});
+
+createInertiaApp({
+    title: (title) => `\${title} - \${appName}`,
+    resolve: (name) =>
+        resolvePageComponent(
+            `./Pages/\${name}.jsx`,
+            import.meta.glob("./Pages/**/*.jsx")
+        ),
+    setup({ el, App, props }) {
+        const root = createRoot(el);
+
+        root.render(
+            <QueryClientProvider client={queryClient}>
+                <App {...props} />
+            </QueryClientProvider>
+        );
+    },
+    progress: {
+        color: "#4B5563",
+    },
+});
+JSX;
+
+        if (!file_exists(dirname($appJsPath))) {
+            mkdir(dirname($appJsPath), 0777, true);
+        }
+
+        file_put_contents($appJsPath, $newContent);
+        $output->writeln("✅ <info>Updated app.jsx with TanStack React Query setup.</info>");
+    }
+
+
+
+    private function updateMiddlewareConfig(OutputInterface $output): void
+    {
+        $filePath = "bootstrap/app.php";
+
+        if (!file_exists($filePath)) {
+            $output->writeln("⚠️ <error>bootstrap/app.php not found!</error>");
+            return;
+        }
+
+        $middlewareSnippet = <<<PHP
+        \$middleware->alias([
+            'role' => \\Spatie\\Permission\\Middleware\\RoleMiddleware::class,
+            'permission' => \\Spatie\\Permission\\Middleware\\PermissionMiddleware::class,
+            'role_or_permission' => \\Spatie\\Permission\\Middleware\\RoleOrPermissionMiddleware::class,
+        ]);
+    PHP;
+
+        $fileContent = file_get_contents($filePath);
+
+        if (str_contains($fileContent, "'role' => \\Spatie\\Permission\\Middleware\\RoleMiddleware::class")) {
+            $output->writeln("⚠️ <info>Spatie middleware already registered in bootstrap/app.php. Skipping...</info>");
+            return;
+        }
+
+        $pattern = '/->withMiddleware\(function \(Middleware \$middleware\) \{(.*?)\}/s';
+
+        if (preg_match($pattern, $fileContent, $matches)) {
+            $updatedContent = preg_replace(
+                $pattern,
+                "->withMiddleware(function (Middleware \$middleware) {\n$1\n\n        // Spatie Permission Middleware\n        $middlewareSnippet\n    }",
+                $fileContent
+            );
+
+            file_put_contents($filePath, $updatedContent);
+            $output->writeln("✅ <info>Spatie middleware added successfully to bootstrap/app.php.</info>");
+        } else {
+            $output->writeln("⚠️ <error>Could not modify bootstrap/app.php. Please add middleware manually.</error>");
+        }
+    }
+
 
     private function runCommand(string $command, OutputInterface $output): void
     {
