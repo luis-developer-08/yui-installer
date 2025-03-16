@@ -1,6 +1,21 @@
 #!/usr/bin/env php
 <?php
 
+// Path to your package's directory
+$packagePath = __DIR__ . '/../';
+
+// Check if the vendor directory exists, if not, run composer install
+if (!is_dir($packagePath . 'vendor')) {
+    echo "Dependencies not found. Running composer install...\n";
+    passthru('composer install', $return_var);
+
+    // Check if composer install was successful
+    if ($return_var !== 0) {
+        echo "Failed to install dependencies. Please run 'composer install' manually.\n";
+        exit(1);
+    }
+}
+
 require __DIR__ . '/../vendor/autoload.php';
 
 use Symfony\Component\Console\Application;
