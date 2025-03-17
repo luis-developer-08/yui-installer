@@ -98,9 +98,8 @@ class InstallCommand extends Command
                 return in_array($feature, $featureOptions);
             });
 
-            // Ask for test framework
-            $testFrameworkOptions = ['Pest', 'PHPUnit'];
-            $testFramework = askWithOptions($helper, $input, $output, 'Which test framework do you want to use?', $testFrameworkOptions, 'Pest');
+            // Set Pest as the default test framework (removing PHPUnit)
+            $testFramework = 'Pest';
 
             // Store the user's choices
             $options = compact('stack', 'features', 'testFramework');
