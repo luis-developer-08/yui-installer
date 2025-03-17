@@ -126,7 +126,7 @@ This command ensures that controllers are correctly placed, models are created i
 
 ## 📖 Documentation
 
-For more details on Laravel Breeze, visit the official [Laravel Starter Kit docs](https://laravel.com/docs/master/starter-kits#laravel-breeze).
+For more details on YUI, visit the official [YUI](https://yui-app.balbuena.io/).
 
 ## 🤝 Contributing
 
