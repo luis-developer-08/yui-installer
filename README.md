@@ -8,7 +8,7 @@ This kit is **JavaScript-first**, using **JSX instead of TSX**, making it access
 
 ---
 
-## 🎯 Why Choose This Kit?
+## 🎯 Features
 
 ✔️ **React 19 + JSX** – Simple, clean, and TypeScript-free  
 ✔️ **Laravel 12 + Breeze** – Lightweight authentication with Inertia.js  
