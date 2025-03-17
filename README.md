@@ -126,7 +126,7 @@ This command ensures that controllers are correctly placed, models are created i
 
 ## 📖 Documentation
 
-For more details on YUI, visit the official [YUI](https://yui-app.balbuena.io/).
+For more details on YUI, visit the official [YUI Website](https://yui-app.balbuena.io/).
 
 ## 🤝 Contributing
 
