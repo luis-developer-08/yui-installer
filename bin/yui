@@ -36,8 +36,8 @@ if (!is_dir($packagePath . 'vendor')) {
 require __DIR__ . '/../vendor/autoload.php';
 
 use Symfony\Component\Console\Application;
-use CustomLaravelInstaller\InstallCommand;
-use CustomLaravelInstaller\VersionCommand;
+use YuiInstaller\Commands\InstallCommand;
+use YuiInstaller\Commands\VersionCommand;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 class CustomApplication extends Application

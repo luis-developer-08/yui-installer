@@ -1,6 +1,6 @@
 <?php
 
-namespace CustomLaravelInstaller;
+namespace YuiInstaller\Commands;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,7 +18,7 @@ class VersionCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $composerJson = json_decode(file_get_contents(__DIR__ . '/../composer.json'), true);
+        $composerJson = json_decode(file_get_contents(__DIR__ . '/../../composer.json'), true);
 
         $version = $composerJson['version'] ?? 'unknown';
 

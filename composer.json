@@ -1,12 +1,12 @@
 {
   "name": "luis-developer-08/yui-installer",
   "description": "My customize laravel installer Yui",
-  "version": "v1.1.5",
+  "version": "v1.1.6",
   "type": "project",
   "license": "MIT",
   "autoload": {
     "psr-4": {
-      "CustomLaravelInstaller\\": "src/"
+      "YuiInstaller\\": "src/"
     }
   },
   "bin": [
