@@ -1,0 +1,12 @@
+{
+  "providers": [
+    {
+      "name": "None",
+      "package": "luis-developer-08/yui-default_ui"
+    },
+    {
+      "name": "Hero UI",
+      "package": "luis-developer-08/yui-hero_ui"
+    }
+  ]
+}

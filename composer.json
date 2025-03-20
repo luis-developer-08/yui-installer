@@ -1,7 +1,7 @@
 {
   "name": "luis-developer-08/yui-installer",
   "description": "My customize laravel installer Yui",
-  "version": "v1.1.6",
+  "version": "v1.1.7",
   "type": "project",
   "license": "MIT",
   "autoload": {
@@ -20,6 +20,7 @@
   ],
   "minimum-stability": "stable",
   "require": {
-    "symfony/console": "^7.2"
+    "symfony/console": "^7.2",
+    "illuminate/collections": "^12.3"
   }
 }

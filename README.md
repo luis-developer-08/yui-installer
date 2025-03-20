@@ -117,7 +117,7 @@ class PostController extends Controller
 ### 🔗 Auto-Registered Route in `routes/api.php`
 
 ```php
-Orion::resource('posts', \App\Http\Controllers\Orion\PostController::class);
+Orion::resource('posts', \App\Http\Controllers\Orion\PostController::class)->middleware(['auth', 'web']);
 ```
 
 This command ensures that controllers are correctly placed, models are created if missing, and routes are automatically registered.

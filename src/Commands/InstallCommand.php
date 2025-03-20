@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+use Illuminate\Support\Collection;
 
 class InstallCommand extends Command
 {
@@ -58,13 +59,41 @@ class InstallCommand extends Command
             ];
         }
 
+        $uiProviders = $this->loadUiProviders($output);
+
+        if (empty($uiProviders)) {
+            $output->writeln("⚠️ No UI providers found in the JSON file.");
+        }
+
+        $uiNames = array_column($uiProviders, 'name');
+
+        $uiProviderQuestion = new ChoiceQuestion(
+            '<question>Which Ui provider?</question> (default: Hero UI)',
+            $uiNames,
+            1
+        );
+
+        $uiProviderName = $helper->ask($input, $output, $uiProviderQuestion);
+
+        $selectedProvider = collect($uiProviders)->firstWhere('name', $uiProviderName);
+
+        if (!$selectedProvider) {
+            $output->writeln("❌ Invalid provider selection.");
+        }
+
+        $package = $selectedProvider['package'];
+
         $currentDir = getcwd();
 
         // Set the target directory for the new Laravel project (e.g., from the current directory)
         $projectDir = $currentDir . '/' . $name; // Full path to where you want the project
 
-        $output->writeln("<info>Creating Laravel project in: $projectDir</info>");
-        $this->runCommand("composer create-project laravel/laravel $projectDir", $output);
+
+
+        $output->writeln("<info>Creating Yui-Laravel project in: $projectDir</info>");
+        $this->runCommand("composer create-project $package $projectDir", $output);
+
+        // return Command::SUCCESS;
 
         chdir($projectDir);
 
@@ -102,32 +131,55 @@ class InstallCommand extends Command
             $output->writeln("✅ <info>Updated .env file with database configuration.</info>");
         }
 
-        $output->writeln("<info>Installing Breeze...</info>");
-        $this->runCommand("composer require laravel/breeze --dev", $output);
-        $this->runCommand("php artisan breeze:install react --pest", $output);
-        $this->registerMakeInertiaCommand($output);
+        $output->writeln("<info>Installing and building Node Dependencies...</info>");
+        $this->runCommand("npm i", $output);
+        $this->runCommand("npm run build", $output);
+        $output->writeln("✅ <info>Done Installing and building Node Dependencies.</info>");
 
-        $output->writeln("<info>Installing Orion...</info>");
-        $this->runCommand("php artisan install:api", $output);
-        $this->runCommand("composer require tailflow/laravel-orion", $output);
-        $this->registerMakeOrionCommand($output);
+        // $output->writeln("<info>Installing Breeze...</info>");
+        // $this->runCommand("composer require laravel/breeze --dev", $output);
+        // $this->runCommand("php artisan breeze:install react --pest", $output);
+        // $this->registerMakeInertiaCommand($output);
 
-        $output->writeln("<info>Installing Spatie Permission...</info>");
-        $this->runCommand("composer require spatie/laravel-permission", $output);
-        $this->runCommand("php artisan vendor:publish --provider='Spatie\Permission\PermissionServiceProvider'", $output);
-        $this->updateMiddlewareConfig($output);
-        $this->updateUserModel($output);
+        // $output->writeln("<info>Installing Orion...</info>");
+        // $this->runCommand("php artisan install:api", $output);
+        // $this->runCommand("composer require tailflow/laravel-orion", $output);
+        // $this->registerMakeOrionCommand($output);
 
-        $output->writeln("<info>Installing Zustand, React Icons, Tanstack React Query and Hero UI ...</info>");
-        $this->runCommand("npm i zustand react-icons @tanstack/react-query @heroui/react framer-motion", $output);
-        $this->updateTailwindConfig($output);
+        // $output->writeln("<info>Installing Spatie Permission...</info>");
+        // $this->runCommand("composer require spatie/laravel-permission", $output);
+        // $this->runCommand("php artisan vendor:publish --provider='Spatie\Permission\PermissionServiceProvider'", $output);
+        // $this->updateMiddlewareConfig($output);
+        // $this->updateUserModel($output);
 
-        $this->replaceResourcesFolder($output);
-        $this->replaceRoutesFolder($output);
-        $this->copyImagesFolder($output);
+        // $output->writeln("<info>Installing Zustand, React Icons, Tanstack React Query and Hero UI ...</info>");
+        // $output->writeln("<info>Installing Zustand, React Icons and Tanstack React Query...</info>");
+        // $this->runCommand("npm i zustand react-icons @tanstack/react-query", $output);
 
-        $output->writeln('<info>Installation complete!</info>');
+        // $this->runCommand("npm i zustand react-icons @tanstack/react-query @heroui/react framer-motion", $output);
+        // $this->updateTailwindConfig($output);
+        // $this->replaceResourcesFolder($output);
+        // $this->replaceRoutesFolder($output);
+        // $this->copyImagesFolder($output);
+
+        $output->writeln('<info>✅ Installation complete!</info>');
         return Command::SUCCESS;
+    }
+
+    private function loadUiProviders(OutputInterface $output): array
+    {
+        $jsonPath = __DIR__ . '/../ui-providers.json';  // Use new path
+
+        if (!file_exists($jsonPath)) {
+            $output->writeln("⚠️ ui-providers.json not found.");
+
+            return [];
+        }
+
+        $jsonContent = file_get_contents($jsonPath);
+        $data = json_decode($jsonContent, true);
+
+        return $data['providers'] ?? [];
     }
 
     private function replaceResourcesFolder(OutputInterface $output): void
