@@ -208,6 +208,23 @@ This command ensures that controllers are correctly placed, models are created i
 
 For more details on YUI, visit the official [YUI Website](https://yui-app.balbuena.io/).
 
+### 🔗 **Feature Documentation Links**
+
+- **[Laravel](https://laravel.com/docs)**
+- **[Laravel Breeze](https://laravel.com/docs/11.x/starter-kits#laravel-breeze)**
+- **[Laravel Pulse](https://laravel.com/docs/12.x/pulse)**
+- **[Orion](https://orion.tailflow.org/guide)**
+- **[Inertia.js](https://inertiajs.com)**
+- **[React](https://react.dev)**
+- **[React Icons](https://react-icons.github.io/react-icons)**
+- **[TanStack Query](https://tanstack.com/query/latest/docs)**
+- **[Zustand](https://zustand.docs.pmnd.rs/getting-started/introduction)**
+- **[Spatie Permission](https://spatie.be/docs/laravel-permission)**
+- **[TailwindCSS](https://tailwindcss.com)**
+- **[Vite](https://vite.dev)**
+- **[Pest](https://pestphp.com)**
+- **[Hero UI](https://www.heroui.com/)**
+
 ## 🤝 Contributing
 
 We welcome contributions! Check out the [Laravel contribution guide](https://laravel.com/docs/contributions) to get involved.
