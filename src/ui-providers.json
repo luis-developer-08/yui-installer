@@ -7,6 +7,10 @@
     {
       "name": "Hero UI",
       "package": "luis-developer-08/yui-hero_ui"
+    },
+    {
+      "name": "shadcn/ui",
+      "package": "chael412/chael-installer"
     }
   ]
 }
