@@ -32,7 +32,7 @@ This kit is **JavaScript-first**, using **JSX instead of TSX**, making it access
 
 ### 1️⃣ Install the Yui Installer
 
-Install the Yui installer globally using Composer:**[luis-developer-08/yui-installer](https://packagist.org/packages/luis-developer-08/yui-installer)**
+Install the Yui installer globally using Composer: **[luis-developer-08/yui-installer](https://packagist.org/packages/luis-developer-08/yui-installer)**
 
 ```bash
 composer global require luis-developer-08/yui-installer
