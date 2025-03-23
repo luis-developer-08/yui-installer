@@ -86,7 +86,7 @@ composer run dev
 
 ## ⚡ Create Inertia Components Easily
 
-This starter kit includes a custom Artisan command to quickly generate Inertia.js React components:
+This starter kit includes a custom Artisan command to quickly generate Inertia.js React components with flexible directory options.
 
 ### 🏗️ Generate a New Component
 
@@ -94,12 +94,43 @@ This starter kit includes a custom Artisan command to quickly generate Inertia.j
 php artisan make:inertia Components/MyComponent
 ```
 
-This will create a new file at `resources/js/Components/MyComponent.jsx` with a basic component template.
-
-### 📂 File Structure
+This will create:
 
 ```
 resources/js/Components/MyComponent.jsx
+```
+
+### 📂 Flexible Folder Placement
+
+You can specify different folders using flags:
+
+- `-c` or `--components`: Create the component in `resources/js/Components/`
+- `-l` or `--layouts`: Create the component in `resources/js/Layouts/`
+- `-s` or `--sections`: Create the component in `resources/js/Sections/`
+- `-p` or `--pages`: Create the component in `resources/js/Pages/`
+
+✅ **Example usage with flags:**
+
+```bash
+php artisan make:inertia Dashboard -p
+```
+
+Creates:
+
+```
+resources/js/Pages/Dashboard.jsx
+```
+
+You can also create nested folders like:
+
+```bash
+php artisan make:inertia Components/Auth/Login
+```
+
+Creates:
+
+```
+resources/js/Components/Auth/Login.jsx
 ```
 
 ### ✨ Example Generated Component
@@ -113,6 +144,14 @@ const MyComponent = () => {
 
 export default MyComponent;
 ```
+
+### 🚀 Smart Behavior
+
+- Automatically prevents duplicate folder nesting.
+- Opens the newly created file in your default editor.
+- Ensures the correct folder placement, whether using flags or specifying the path.
+
+---
 
 This command ensures that components are placed in the correct directory and prevents overwriting existing files. It also automatically opens the newly created file for editing.
 
