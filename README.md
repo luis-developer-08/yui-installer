@@ -157,11 +157,9 @@ This command ensures that components are placed in the correct directory and pre
 
 ---
 
-## ⚡ Create Orion Controllers Easily
+### 🏗️ **Generate Orion Controllers**
 
-This starter kit also includes a command to quickly generate Orion controllers along with their associated models:
-
-### 🏗️ Generate a New Orion Controller
+You can quickly generate Orion controllers along with their associated models:
 
 ```bash
 php artisan make:orion PostController
@@ -171,16 +169,19 @@ This will create:
 
 - `app/Http/Controllers/Orion/PostController.php`
 - `app/Models/Post.php` (if it doesn’t exist)
+- `database/migrations/0001_01_01_000000_create_posts_table.php`
 - Adds a route in `routes/api.php`
 
-### 📂 File Structure
+✅ **File Structure:**
 
 ```
 app/Http/Controllers/Orion/PostController.php
 app/Models/Post.php
+database/migrations/0001_01_01_000000_create_posts_table.php
+routes/api.php
 ```
 
-### ✨ Example Generated Controller
+✅ **Example Generated Controller:**
 
 ```php
 <?php
@@ -196,13 +197,43 @@ class PostController extends Controller
 }
 ```
 
-### 🔗 Auto-Registered Route in `routes/api.php`
+✅ **Example Generated Model:**
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Post extends Model
+{
+    use HasFactory;
+
+    protected $guarded = [];
+}
+```
+
+✅ **Auto-Generated Migration:**
+
+```php
+database/migrations/0001_01_01_000000_create_posts_table.php
+```
+
+✅ **Auto-Registered Route in **`routes/api.php`\*\*
 
 ```php
 Orion::resource('posts', \App\Http\Controllers\Orion\PostController::class)->middleware(['auth', 'web']);
 ```
 
-This command ensures that controllers are correctly placed, models are created if missing, and routes are automatically registered.
+This command ensures:
+
+- Correct controller placement.
+- Generates missing models.
+- Automatically registers routes.
+
+---
 
 ---
 
