@@ -1,5 +1,15 @@
 {
   "name": "luis-developer-08/yui-installer",
+  "authors": [
+    {
+      "name": "luis",
+      "email": "sandyluisbalbuena.business@gmail.com"
+    },
+    {
+      "name": "chael412",
+      "email": "michaelprovo412@gmail.com"
+    }
+  ],
   "description": "My customize laravel installer Yui",
   "version": "v1.1.7",
   "type": "project",
@@ -11,12 +21,6 @@
   },
   "bin": [
     "bin/yui"
-  ],
-  "authors": [
-    {
-      "name": "luis",
-      "email": "sandyluisbalbuena.business@gmail.com"
-    }
   ],
   "minimum-stability": "stable",
   "require": {
