@@ -1,19 +1,18 @@
 {
   "name": "luis-developer-08/yui-installer",
-  "description": "Yui Installer is a powerful and customizable Laravel installer with enhanced features and flexibility.",
-  "version": "v1.2.1",
-  "type": "composer-plugin",
-  "license": "MIT",
   "authors": [
     {
-      "name": "Luis",
+      "name": "luis",
       "email": "sandyluisbalbuena.business@gmail.com"
     },
     {
-      "name": "Chael412",
+      "name": "chael412",
       "email": "michaelprovo412@gmail.com"
     }
   ],
+  "description": "Yui Installer is a powerful and customizable Laravel installer with enhanced features and flexibility.",
+  "version": "v1.2.1",
+  "license": "MIT",
   "autoload": {
     "psr-4": {
       "YuiInstaller\\": "src/"
@@ -22,22 +21,9 @@
   "bin": [
     "bin/yui"
   ],
-  "extra": {
-    "class": "YuiInstaller\\ComposerPlugin"
-  },
-  "config": {
-    "allow-plugins": {
-      "luis-developer-08/yui-installer": true
-    }
-  },
   "minimum-stability": "stable",
   "require": {
-    "php": ">=8.2",
-    "composer-plugin-api": "^2.1",
     "symfony/console": "^7.2",
     "illuminate/collections": "^12.3"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "^10.0"
   }
 }
