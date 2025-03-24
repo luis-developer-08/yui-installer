@@ -95,6 +95,11 @@ class InstallCommand extends Command
 
         chdir($projectDir);
 
+        // Regenerate the lock file to prevent outdated dependencies message
+        $this->runCommand("composer update --lock", $output);
+
+        $output->writeln("<info>✅ Composer lock file synced with composer.json</info>");
+
         // Path to .env file
         $envPath = getcwd() . '/.env';
 
