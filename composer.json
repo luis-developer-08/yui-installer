@@ -11,7 +11,7 @@
     }
   ],
   "description": "Yui is a customize Laravel Installer with a boom!!",
-  "version": "v1.1.7",
+  "version": "v1.2.0",
   "type": "project",
   "license": "MIT",
   "autoload": {
