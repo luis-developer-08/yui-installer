@@ -92,18 +92,9 @@ class InstallCommand extends Command
 
         $output->writeln("<info>Creating Yui-Laravel project in: $projectDir</info>");
         // $this->runCommand("composer create-project $package $projectDir", $output);
-        $this->runCommand("composer create-project --no-install $package $projectDir", $output);
+        $this->runCommand("composer create-project $package $projectDir", $output);
 
         chdir($projectDir);
-
-        // Regenerate the lock file to prevent outdated dependencies message
-        // ✅ Install dependencies from composer.json (ignoring lock file)
-        $this->runCommand("composer install --no-scripts", $output);
-        $output->writeln("<info>✅ Installed latest dependencies without outdated lock file issues.</info>");
-
-        // ✅ Regenerate the lock file
-        $this->runCommand("composer update --lock", $output);
-        $output->writeln("<info>✅ Composer lock file synced with composer.json</info>");
 
         // Path to .env file
         $envPath = getcwd() . '/.env';
@@ -152,79 +143,6 @@ class InstallCommand extends Command
         $data = json_decode($jsonContent, true);
 
         return $data['providers'] ?? [];
-    }
-
-    private function replaceResourcesFolder(OutputInterface $output): void
-    {
-        $projectPath = getcwd();
-        $preparedResourcesPath = __DIR__ . '/../resources';  // Use new path
-
-        $targetPath = $projectPath . '/resources';
-
-        // Ensure the prepared folder exists
-        if (!is_dir($preparedResourcesPath)) {
-            $output->writeln("⚠️ <error>Prepared resources folder not found at: {$preparedResourcesPath}</error>");
-            return;
-        }
-
-        // Remove the existing resources folder
-        if (is_dir($targetPath)) {
-            $output->writeln("🗑️ <info>Removing existing resources folder...</info>");
-            $this->deleteFolder($targetPath);
-        }
-
-        // Copy the prepared resources folder
-        $output->writeln("📁 <info>Copying prepared resources folder...</info>");
-        $this->copyFolder($preparedResourcesPath, $targetPath);
-
-        $output->writeln("✅ <info>Replaced resources folder successfully.</info>");
-    }
-
-    private function deleteFolder(string $folder): void
-    {
-        if (!is_dir($folder)) {
-            return;
-        }
-
-        $files = array_diff(scandir($folder), ['.', '..']);
-
-        foreach ($files as $file) {
-            $filePath = "$folder/$file";
-            if (is_dir($filePath)) {
-                $this->deleteFolder($filePath);
-            } else {
-                unlink($filePath);
-            }
-        }
-
-        rmdir($folder);
-    }
-
-    /**
-     * Recursively copies the prepared folder into the Laravel project.
-     */
-    private function copyFolder(string $source, string $destination): void
-    {
-        if (!is_dir($destination)) {
-            mkdir($destination, 0777, true);
-        }
-
-        $files = scandir($source);
-
-        foreach ($files as $file) {
-            if ($file === '.' || $file === '..') {
-                continue;
-            }
-
-            $srcFile = $source . '/' . $file;
-            $destFile = $destination . '/' . $file;
-
-            if (is_dir($srcFile)) {
-                $this->copyFolder($srcFile, $destFile);
-            } else {
-                copy($srcFile, $destFile);
-            }
-        }
     }
 
     private function runCommand(string $command, OutputInterface $output): void

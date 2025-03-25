@@ -11,7 +11,7 @@
     }
   ],
   "description": "Yui Installer is a powerful and customizable Laravel installer with enhanced features and flexibility.",
-  "version": "v1.2.3",
+  "version": "v1.2.4",
   "license": "MIT",
   "autoload": {
     "psr-4": {
