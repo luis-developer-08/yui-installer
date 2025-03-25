@@ -10,7 +10,7 @@
       "email": "michaelprovo412@gmail.com"
     }
   ],
-  "description": "Yui Installer is a powerful and customizable Laravel installer with enhanced features and flexibility.",
+  "description": "Yui Installer is a powerful and customized Laravel installer with enhanced features and flexibility.",
   "version": "v1.2.4",
   "license": "MIT",
   "autoload": {
