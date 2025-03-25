@@ -24,6 +24,7 @@ This kit is **JavaScript-first**, using **JSX instead of TSX**, making it access
 ✔️ **Vite-Powered** – Lightning-fast HMR for smooth development.  
 ✔️ **Pre-configured Testing** – Includes PHPUnit & Pest.  
 ✔️ **Hero UI** – Beautiful, fast and modern React UI library for building accessible and customizable web applications.  
+✔️ **shadcn/ui** - A set of beautifully-designed, accessible components and a code distribution platform. Works with your favorite frameworks. Open Source. Open Code.  
 ✔️ **Quick Setup** – Get started in minutes!
 
 ---
@@ -60,6 +61,7 @@ During installation, you will be prompted to choose a database. Select the one y
 ```bash
 [0] None
 [1] Hero UI
+[2] shadcn/ui
 ```
 
 ### 5️⃣ Navigate to Your Project Directory
@@ -137,7 +139,7 @@ resources/js/Components/Auth/Login.jsx
 import React from "react";
 
 const MyComponent = () => {
-  return <div>{/* MyComponent component */}</div>;
+ return <div>{/* MyComponent component */}</div>;
 };
 
 export default MyComponent;
@@ -224,6 +226,7 @@ For more details on YUI, visit the official [YUI Website](https://yui-app.balbue
 - **[Vite](https://vite.dev)**
 - **[Pest](https://pestphp.com)**
 - **[Hero UI](https://www.heroui.com/)**
+- **[shadcn/ui](https://ui.shadcn.com/)**
 
 ## 🤝 Contributing
 
