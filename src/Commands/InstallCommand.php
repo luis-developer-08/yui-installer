@@ -91,13 +91,18 @@ class InstallCommand extends Command
 
 
         $output->writeln("<info>Creating Yui-Laravel project in: $projectDir</info>");
-        $this->runCommand("composer create-project $package $projectDir", $output);
+        // $this->runCommand("composer create-project $package $projectDir", $output);
+        $this->runCommand("composer create-project --no-install $package $projectDir", $output);
 
         chdir($projectDir);
 
         // Regenerate the lock file to prevent outdated dependencies message
-        $this->runCommand("composer update --lock", $output);
+        // ✅ Install dependencies from composer.json (ignoring lock file)
+        $this->runCommand("composer install --no-scripts", $output);
+        $output->writeln("<info>✅ Installed latest dependencies without outdated lock file issues.</info>");
 
+        // ✅ Regenerate the lock file
+        $this->runCommand("composer update --lock", $output);
         $output->writeln("<info>✅ Composer lock file synced with composer.json</info>");
 
         // Path to .env file
