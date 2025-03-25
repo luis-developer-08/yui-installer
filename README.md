@@ -32,7 +32,7 @@ This kit is **JavaScript-first**, using **JSX instead of TSX**, making it access
 
 ### 1️⃣ Install the Yui Installer
 
-Install the Yui installer globally using Composer:
+Install the Yui installer globally using Composer: **[luis-developer-08/yui-installer](https://packagist.org/packages/luis-developer-08/yui-installer)**
 
 ```bash
 composer global require luis-developer-08/yui-installer
@@ -57,12 +57,9 @@ During installation, you will be prompted to choose a database. Select the one y
 
 ### 4️⃣ Choose a UI Provider
 
-Next, select your preferred UI provider.
-
 ```bash
 [0] None
 [1] Hero UI
-[2] shadcn/ui
 ```
 
 ### 5️⃣ Navigate to Your Project Directory
@@ -158,9 +155,11 @@ This command ensures that components are placed in the correct directory and pre
 
 ---
 
-### 🏗️ **Generate Orion Controllers**
+## ⚡ Create Orion Controllers Easily
 
-You can quickly generate Orion controllers along with their associated models:
+This starter kit also includes a command to quickly generate Orion controllers along with their associated models:
+
+### 🏗️ Generate a New Orion Controller
 
 ```bash
 php artisan make:orion PostController
@@ -170,19 +169,16 @@ This will create:
 
 - `app/Http/Controllers/Orion/PostController.php`
 - `app/Models/Post.php` (if it doesn’t exist)
-- `database/migrations/0001_01_01_000000_create_posts_table.php`
 - Adds a route in `routes/api.php`
 
-✅ **File Structure:**
+### 📂 File Structure
 
 ```
 app/Http/Controllers/Orion/PostController.php
 app/Models/Post.php
-database/migrations/0001_01_01_000000_create_posts_table.php
-routes/api.php
 ```
 
-✅ **Example Generated Controller:**
+### ✨ Example Generated Controller
 
 ```php
 <?php
@@ -198,43 +194,13 @@ class PostController extends Controller
 }
 ```
 
-✅ **Example Generated Model:**
-
-```php
-<?php
-
-namespace App\Models;
-
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class Post extends Model
-{
-    use HasFactory;
-
-    protected $guarded = [];
-}
-```
-
-✅ **Auto-Generated Migration:**
-
-```php
-database/migrations/0001_01_01_000000_create_posts_table.php
-```
-
-✅ **Auto-Registered Route in **`routes/api.php`\*\*
+### 🔗 Auto-Registered Route in `routes/api.php`
 
 ```php
 Orion::resource('posts', \App\Http\Controllers\Orion\PostController::class)->middleware(['auth', 'web']);
 ```
 
-This command ensures:
-
-- Correct controller placement.
-- Generates missing models.
-- Automatically registers routes.
-
----
+This command ensures that controllers are correctly placed, models are created if missing, and routes are automatically registered.
 
 ---
 
@@ -242,16 +208,33 @@ This command ensures:
 
 For more details on YUI, visit the official [YUI Website](https://yui-app.balbuena.io/).
 
+### 🔗 **Feature Documentation Links**
+
+- **[Laravel](https://laravel.com/docs)**
+- **[Laravel Breeze](https://laravel.com/docs/11.x/starter-kits#laravel-breeze)**
+- **[Laravel Pulse](https://laravel.com/docs/12.x/pulse)**
+- **[Orion](https://orion.tailflow.org/guide)**
+- **[Inertia.js](https://inertiajs.com)**
+- **[React](https://react.dev)**
+- **[React Icons](https://react-icons.github.io/react-icons)**
+- **[TanStack Query](https://tanstack.com/query/latest/docs)**
+- **[Zustand](https://zustand.docs.pmnd.rs/getting-started/introduction)**
+- **[Spatie Permission](https://spatie.be/docs/laravel-permission)**
+- **[TailwindCSS](https://tailwindcss.com)**
+- **[Vite](https://vite.dev)**
+- **[Pest](https://pestphp.com)**
+- **[Hero UI](https://www.heroui.com/)**
+
 ## 🤝 Contributing
 
-We welcome contributions! Check out the [Laravel contribution guide](https://laravel.com/docs/contributions) to get involved.
+We welcome contributions! Check out the [Yui Installer contribution guide](https://github.com/luis-developer-08/yui-installer/blob/main/CONTRIBUTING.md) to get involved.
 
 ## 📜 Code of Conduct
 
-Be kind and respectful. Please follow Laravel's [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Be kind and respectful. Please follow Yui's [Code of Conduct](https://github.com/luis-developer-08/yui-installer/blob/main/CODE_OF_CONDUCT.md).
 
 ## ⚖️ License
 
-This starter kit is **open-source** under the **MIT license**.
+This installer is **open-source** under the **MIT license**.
 
 ---
