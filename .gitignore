@@ -7,3 +7,6 @@
 # Ignore IDE/editor settings
 /.idea/
 /.vscode/
+composer.lock
+package-lock.json
+
